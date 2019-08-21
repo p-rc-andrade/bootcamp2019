@@ -13,4 +13,4 @@ server.get("/users/:id", (req, res) => {
   return res.json({ message: `Buscando o usuário ${id}` });
 });
 
-server.listen(3333);
+server.listen(3000);
