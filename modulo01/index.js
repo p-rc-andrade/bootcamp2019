@@ -1,7 +1,7 @@
 const express = require("express");
 
 const server = express();
-server.use(express.json()); // Support: Requests with JSON payloads
+server.use(express.json()); // JSON payload req support
 server.listen(3000);
 
 // Query params = ?test=1
