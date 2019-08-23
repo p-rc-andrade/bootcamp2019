@@ -61,11 +61,11 @@ server.put("/projects/:id", checkParamsId, (req, res) => {
   const { id } = req.params;
   const { title } = req.body;
   const targetProject = projects.find(p => p.id === `${id}`);
-  const targetProjectIndex = projects.findIndex(p => p.id === `${id}`);
+  //   const targetProjectIndex = projects.findIndex(p => p.id === `${id}`);
 
   targetProject.title = title;
 
-  projects.splice(targetProjectIndex, 1, targetProject);
+  //   projects.splice(targetProjectIndex, 1, targetProject);
 
   return res.send(projects);
 });
@@ -84,12 +84,12 @@ server.delete("/projects/:id", checkParamsId, (req, res) => {
 server.post("/projects/:id/tasks", checkParamsId, (req, res) => {
   const { id } = req.params;
   const task = req.body.title;
-  const targetProjectIndex = projects.findIndex(p => p.id === `${id}`);
+  //   const targetProjectIndex = projects.findIndex(p => p.id === `${id}`);
   const targetProject = projects.find(p => p.id === `${id}`);
 
   targetProject.tasks.push(task);
 
-  projects.splice(targetProjectIndex, 1, targetProject);
+  //   projects.splice(targetProjectIndex, 1, targetProject);
 
   return res.send(projects);
 });
