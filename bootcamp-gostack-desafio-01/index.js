@@ -12,14 +12,32 @@ const projects = [
   { id: "3", title: "projectX", tasks: [] }
 ];
 
-const checkValidId = (req, res, next) => {
+// GLOBAL Middleware - Request Counter
+let counter = 0;
+server.use((req, res, next) => {
+  console.log(`Requests Count: ${++counter}`);
+
+  return next();
+});
+
+// LOCAL Middleware - Input Validation
+const checkNewProjectForm = (req, res, next) => {
   const { id, title } = req.body;
 
   if (!id) return res.status(400).json({ error: "Id is required" });
   if (!title) return res.status(400).json({ error: "Title is required" });
 
-  if (projects.find(item => item.id === id))
+  if (projects.find(item => item.id === `${id}`))
     return res.status(409).json({ error: "Project Id found" });
+
+  return next();
+};
+
+const checkParamsId = (req, res, next) => {
+  const { id } = req.params;
+
+  if (!projects.find(item => item.id === `${id}`))
+    return res.status(404).json({ error: "Project Id not found" });
 
   return next();
 };
@@ -30,7 +48,7 @@ server.get("/projects", (req, res) => {
 });
 
 //[POST] /projects
-server.post("/projects", checkValidId, (req, res) => {
+server.post("/projects", checkNewProjectForm, (req, res) => {
   const { id, title } = req.body;
 
   projects.push({ id: `${id}`, title: `${title}`, tasks: [] });
@@ -39,11 +57,11 @@ server.post("/projects", checkValidId, (req, res) => {
 });
 
 //[PUT] /projects/:id
-server.put("/projects/:id", (req, res) => {
+server.put("/projects/:id", checkParamsId, (req, res) => {
   const { id } = req.params;
   const { title } = req.body;
-  const targetProject = projects.find(p => p.id === id);
-  const targetProjectIndex = projects.findIndex(p => p.id === id);
+  const targetProject = projects.find(p => p.id === `${id}`);
+  const targetProjectIndex = projects.findIndex(p => p.id === `${id}`);
 
   targetProject.title = title;
 
@@ -53,9 +71,9 @@ server.put("/projects/:id", (req, res) => {
 });
 
 //[DELETE] /projects/:id
-server.delete("/projects/:id", (req, res) => {
+server.delete("/projects/:id", checkParamsId, (req, res) => {
   const { id } = req.params;
-  const targetProjectIndex = projects.findIndex(p => p.id === id);
+  const targetProjectIndex = projects.findIndex(p => p.id === `${id}`);
 
   projects.splice(targetProjectIndex, 1);
 
@@ -63,11 +81,11 @@ server.delete("/projects/:id", (req, res) => {
 });
 
 //[POST] /projects/:id/tasks
-server.post("/projects/:id/tasks", (req, res) => {
+server.post("/projects/:id/tasks", checkParamsId, (req, res) => {
   const { id } = req.params;
   const task = req.body.title;
-  const targetProjectIndex = projects.findIndex(p => p.id === id);
-  const targetProject = projects.find(p => p.id === id);
+  const targetProjectIndex = projects.findIndex(p => p.id === `${id}`);
+  const targetProject = projects.find(p => p.id === `${id}`);
 
   targetProject.tasks.push(task);
 
