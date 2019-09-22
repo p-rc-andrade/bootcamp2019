@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import multer from 'multer';
+import multerConfig from './config/multer';
 import UserController from './app/controllers/UserController';
 import SessionController from './app/controllers/SessionController';
 
@@ -10,6 +12,7 @@ import {
 } from './app/middlewares/schemaValidation';
 
 const routes = new Router();
+const upload = multer(multerConfig);
 
 routes.get('/test', (req, res) => {
   return res.send('test response');
@@ -32,5 +35,9 @@ routes.put(
   authMiddleware,
   UserController.update
 );
+
+routes.post('/files', authMiddleware, upload.single('file'), (req, res) => {
+  return res.json({ ok: true });
+});
 
 export default routes;
