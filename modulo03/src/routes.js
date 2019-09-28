@@ -24,8 +24,11 @@ routes.get('/test', (req, res) => {
 // This will only work for all defined routes after this middleware
 // routes.use(authMiddleware);
 
-// [GET] User Sign In / Get Access Token
+// [POST] User Sign In / Get Access Token
 routes.post('/sessions', getSessionSchemaValidation, SessionController.store);
+
+// [GET] User List
+routes.get('/users', UserController.index);
 
 // [POST] User Sign up
 routes.post('/users', signUpUserSchemaValidation, UserController.store);

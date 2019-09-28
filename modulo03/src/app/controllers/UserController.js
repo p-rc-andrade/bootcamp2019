@@ -1,6 +1,24 @@
 import User from '../models/User';
+import File from '../models/File';
 
 class UserController {
+  // [GET] /users - Get User list
+  async index(req, res) {
+    const Users = await User.findAll({
+      where: { provider: false },
+      attributes: ['id', 'name', 'email', 'avatar_id'],
+      include: [
+        {
+          model: File,
+          as: 'avatar',
+          attributes: ['name', 'path', 'url'],
+        },
+      ],
+    });
+
+    return res.json(Users);
+  }
+
   // [POST] /users - User Sign Up
   async store(req, res) {
     // User already exists?
