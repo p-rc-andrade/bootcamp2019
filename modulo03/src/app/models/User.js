@@ -30,7 +30,8 @@ class MeetappUser extends Model {
   // Used to associate the File model to the User model
   // User table has a avatar_id column
   static associate(models) {
-    // This will add avatar_id from File table to the User table
+    // This creates a connection between (User Table "avatar_id" (FOREIGN KEY))
+    // and (File Table "id" (PRIMARY KEY))
     this.belongsTo(models.MeetappFile, {
       foreignKey: 'avatar_id',
       as: 'avatar',
