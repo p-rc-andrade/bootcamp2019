@@ -7,11 +7,16 @@ import File from '../models/File';
 class AppointmentController {
   // [GET] /appointments
   async index(req, res) {
+    const { page = 1 } = req.query;
+    const length = 20;
+
     const appointments = await Appointment.findAll({
       where: {
-        user_id: req.query.user_id,
+        user_id: req.userId,
         canceled_at: null,
       },
+      limit: length,
+      offset: (page - 1) * length,
       order: ['date'],
       include: [
         {
