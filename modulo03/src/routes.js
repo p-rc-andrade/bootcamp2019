@@ -44,6 +44,9 @@ routes.put(
 // [GET] Providers - index (Provider list)
 routes.get('/providers', ProviderController.index);
 
+// [GET] Appointments - index (User Appointments list)
+routes.get('/appointments', AppointmentController.index);
+
 // [POST] Appointments - store (create new appointment)
 routes.post('/appointments', AppointmentController.store);
 

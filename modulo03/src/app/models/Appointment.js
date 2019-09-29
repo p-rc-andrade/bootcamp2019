@@ -19,6 +19,7 @@ class MeetappAppointment extends Model {
     // user_id and provider_id are FOREIGN KEYS that reside
     // on Appointment Table. This FK will be pointed to the table User PK Id
     // You will need to use "as" to distinguish "normal user" to "provider user"
+    // To sum up: "belongsTo" associates a a table FK to another table PK
     this.belongsTo(models.MeetappUser, {
       foreignKey: 'user_id',
       as: 'user',

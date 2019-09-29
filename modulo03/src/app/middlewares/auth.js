@@ -26,7 +26,7 @@ export default async (req, res, next) => {
 
     // Add new variable as request variable.
     req.userId = decoded.id;
-    console.log(req.userId);
+    console.log('User_Id: ', req.userId);
 
     // The request after this middleware wont be called if "next()" isn't here.
     return next();
