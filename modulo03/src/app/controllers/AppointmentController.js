@@ -1,8 +1,10 @@
 import * as Yup from 'yup';
-import { startOfHour, parseISO, isBefore } from 'date-fns';
+import { startOfHour, parseISO, isBefore, format } from 'date-fns';
+import pt from 'date-fns/locale/pt';
 import Appointment from '../models/Appointment';
 import User from '../models/User';
 import File from '../models/File';
+import Notification from '../schemas/notification';
 
 class AppointmentController {
   // [GET] /appointments
@@ -92,6 +94,17 @@ class AppointmentController {
       user_id: req.userId,
       provider_id,
       date,
+    });
+
+    // Notifify Appointment Provider - Save to MongoDB non-relational DB
+    const user = await User.findByPk(req.userId);
+    const formattedDate = format(hourStart, "'day' dd MMMM ', at' H:mm'h'", {
+      // locale: pt,
+    });
+
+    await Notification.create({
+      content: `New appointment to ${user.name} at ${formattedDate}`,
+      user: provider_id,
     });
 
     return res.json(appointment);
