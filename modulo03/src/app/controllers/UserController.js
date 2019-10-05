@@ -5,8 +5,8 @@ class UserController {
   // [GET] /users - Get User list
   async index(req, res) {
     const Users = await User.findAll({
-      where: { provider: false },
-      attributes: ['id', 'name', 'email', 'avatar_id'],
+      // where: { provider: false },
+      attributes: ['id', 'name', 'email', 'provider', 'avatar_id'],
       include: [
         {
           model: File,

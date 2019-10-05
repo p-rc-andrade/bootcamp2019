@@ -27,7 +27,7 @@ class Database {
   }
 
   // MongoDB Connection (via mongoose) Non-Relational DB
-  // Source: MongoDB Atlas Cloud Cluster
+  // Source: MongoDB Atlas Cloud Cluster (No-SQL)
   mongo() {
     this.mongoConnection = mongoose.connect(
       'mongodb+srv://pcontra:pcontra@mycluster-q8yoz.mongodb.net/gobarber?retryWrites=true&w=majority',

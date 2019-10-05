@@ -7,6 +7,7 @@ import FileController from './app/controllers/FileController';
 import ProviderController from './app/controllers/ProviderController';
 import AppointmentController from './app/controllers/AppointmentController';
 import ScheduleController from './app/controllers/ScheduleController';
+import NotificationsController from './app/controllers/NotificationsController';
 
 import authMiddleware from './app/middlewares/auth';
 import {
@@ -25,20 +26,20 @@ const upload = multer(multerConfig);
 // [POST] Sessions - store (Sign In / Get Access Token)
 routes.post('/sessions', getSessionSchemaValidation, SessionController.store);
 
+// [GET] Users - index (User list)
+routes.get('/users', UserController.index);
+
 // [POST] Users - store (User Sign Up)
 routes.post('/users', signUpUserSchemaValidation, UserController.store);
 
 // Authorization middleware - Affects all routes after this
 routes.use(authMiddleware);
 
-// [GET] Users - index (User list)
-routes.get('/users', UserController.index);
-
 // [PUT] Users - update (User profile update)
 routes.put(
   '/users',
   updateUserSchemaValidation,
-  authMiddleware,
+  // authMiddleware,
   UserController.update
 );
 
@@ -51,10 +52,20 @@ routes.get('/appointments', AppointmentController.index);
 // [POST] Appointments - store (create new appointment)
 routes.post('/appointments', AppointmentController.store);
 
-// [POST] Files - store (File upload)
-routes.post('/files', upload.single('file'), FileController.store);
+routes.delete('/appointments/:id', AppointmentController.delete);
 
 // [GET] Schedule - index
 routes.get('/schedules', ScheduleController.index);
+
+// [GET] Notifications - index
+routes.get('/notifications', NotificationsController.index);
+
+// [PUT] Notifications - update as read
+routes.put('/notifications/:id', NotificationsController.update);
+
+//
+
+// [POST] Files - store (File upload)
+routes.post('/files', upload.single('file'), FileController.store);
 
 export default routes;
